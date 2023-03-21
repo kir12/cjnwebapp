@@ -3,7 +3,7 @@ export let colors = ["purple","fuchsia","green","lime","olive","yellow","navy","
 
 export const COOKIE_NAME = "BOOKMARKS";
 
-const cookies = new Cookies();
+export const cookies = new Cookies();
 
 export function get_cookie_list(){
     let current_cookie_list = cookies.get(COOKIE_NAME);

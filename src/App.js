@@ -54,6 +54,7 @@ function Dataset({mode}) {
         data = data.addColumn("combinedStart",data.apply(combineTimeColumnsStart, {axis:1}))
         data = data.addColumn("combinedEnd",data.apply(combineTimeColumnsEnd, {axis:1}))
         data = data.sortValues("combinedStart",{ascending:true});
+        data = data.addColumn("uniqueID",data.index, {axis:1});
 
         // optional: drop original time parameters
 
@@ -70,13 +71,16 @@ function Dataset({mode}) {
 
   if (dataUpdated) {
 
+    dataSet.print();
+
     let event_types = toJSON(dataSet["event_type"].unique())[0];
 
     let displayData = dataSet;
     if(mode === "bookmarks"){
       let cookie_list = get_cookie_list();
+      console.log(cookie_list);
       cookie_list = cookie_list.map(Number);
-      displayData = displayData.iloc({rows:cookie_list});
+      displayData = dataSet.loc({rows:cookie_list});
       // TODO: account for positions of indexes changing due to changing length of dataframe
     }
     else if(mode === "filter"){
@@ -87,7 +91,9 @@ function Dataset({mode}) {
     }
     
     let jsonexport = toJSON(displayData);
-    jsonexport.forEach(function (elem, index) {
+    jsonexport.forEach(function (elem, index_) {
+
+      let index = elem["uniqueID"];
 
       // compute event type badge styling
       let evttype = (elm) => elm === elem["event_type"];

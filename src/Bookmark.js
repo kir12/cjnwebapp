@@ -1,11 +1,8 @@
 import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
-import Cookies from 'universal-cookie';
-import { COOKIE_NAME, get_cookie_list } from "./Utils.js"
+import { COOKIE_NAME, get_cookie_list, cookies } from "./Utils.js"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
-
-const cookies = new Cookies();
 
 export default function Bookmark({index}) {
   const [starType, setStarType] = useState(faStar);
