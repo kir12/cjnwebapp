@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
-import { readCSV, DataFrame, toJSON, Dt, toDateTime, Series} from 'danfojs';
+import { readCSV, DataFrame, toJSON } from 'danfojs';
 import events from './events.tsv';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { colors, COOKIE_NAME } from "./Utils.js"
@@ -15,36 +14,11 @@ import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg-icons';
-import { faStar } from '@fortawesome/free-regular-svg-icons';
 import EventDescription from './EventDescription';
-import Cookies from 'universal-cookie';
+import Bookmark from "./Bookmark";
 
 dayjs.extend(customParseFormat)
-const cookies = new Cookies();
 
-function Bookmark({index}) {
-  const [starType, setStarType] = useState(faStar);
-
-  function handleOnClick(){
-    let current_cookie_list = cookies.get(COOKIE_NAME);
-    if(current_cookie_list === undefined){
-      current_cookie_list = [];
-    }
-    else{
-      current_cookie_list = current_cookie_list.split(",");
-    }
-    if(starType === faStar){ // add cookie
-      current_cookie_list.push(index);
-      cookies.set(COOKIE_NAME, current_cookie_list.join(","));
-      setStarType(fasStar);
-    }
-    else{ // remove cookie
-      setStarType(faStar);
-    }
-  } 
-
-  return (<FontAwesomeIcon onClick = {handleOnClick} icon={starType} size="lg" />);
-}
 
 function Dataset() {
   const [dataSet, setDataSet] = useState(new DataFrame());
