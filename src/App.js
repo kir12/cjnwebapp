@@ -9,7 +9,7 @@ import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { colors, COOKIE_NAME } from "./Utils.js"
+import { colors, get_cookie_list } from "./Utils.js"
 import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,7 +20,7 @@ import Bookmark from "./Bookmark";
 dayjs.extend(customParseFormat)
 
 
-function Dataset() {
+function Dataset({mode}) {
   const [dataSet, setDataSet] = useState(new DataFrame());
   const [dataUpdated, setDataUpdated] = useState(false);
   const [showEventDescription, setShowEventDescription] = useState(false);
@@ -72,8 +72,21 @@ function Dataset() {
 
     let event_types = toJSON(dataSet["event_type"].unique())[0];
 
+    let displayData = dataSet;
+    if(mode === "bookmarks"){
+      let cookie_list = get_cookie_list();
+      cookie_list = cookie_list.map(Number);
+      displayData = displayData.iloc({rows:cookie_list});
+      // TODO: account for positions of indexes changing due to changing length of dataframe
+    }
+    else if(mode === "filter"){
+
+    }
+    else{
+
+    }
     
-    let jsonexport = toJSON(dataSet);
+    let jsonexport = toJSON(displayData);
     jsonexport.forEach(function (elem, index) {
 
       // compute event type badge styling
@@ -129,21 +142,27 @@ function Dataset() {
 
 function App() {
 
+  const [mode, setMode] = useState("home");
+
+  function handleRoleChange(type) {
+    setMode(type);
+  }
+
   return (
     <div className="App">
       <Container >
         <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
-          <Nav.Item>
-            <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> All Events</Nav.Link>
+          <Nav.Item onClick={() => handleRoleChange("home")}>
+            <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>
           </Nav.Item>
-          <Nav.Item>
+          <Nav.Item onClick={() => handleRoleChange("bookmarks")}>
             <Nav.Link eventKey="bookmarks"><FontAwesomeIcon icon={fasStar}></FontAwesomeIcon> Bookmarks</Nav.Link>
           </Nav.Item>
-          <Nav.Item>
+          <Nav.Item onClick={() => handleRoleChange("filter")}>
             <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
           </Nav.Item>
         </Nav>
-        <Dataset></Dataset>
+        <Dataset mode={mode}></Dataset>
       </Container>
     </div>
   );
