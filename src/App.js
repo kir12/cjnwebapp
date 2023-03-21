@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
+import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { colors, get_cookie_list, cmp } from "./Utils.js"
@@ -16,9 +17,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg-icons';
 import EventDescription from './EventDescription';
 import Bookmark from "./Bookmark";
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 dayjs.extend(customParseFormat)
 
+function FilterOptions({show_var, hide_fxn}) {
+  // NOTE: form is just a placeholder for now
+  return (
+    <Offcanvas show={show_var} onHide={hide_fxn} placement={"end"}>
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title>Filter Options</Offcanvas.Title>
+      </Offcanvas.Header>
+      <Offcanvas.Body>
+
+        <Form>
+          <Form.Group className="mb-3" controlId="formGroupEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control type="email" placeholder="Enter email" />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formGroupPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" />
+          </Form.Group>
+        </Form>
+
+      </Offcanvas.Body>
+    </Offcanvas>
+  );
+}
 
 function Dataset({mode}) {
   const [dataSet, setDataSet] = useState(new DataFrame());
@@ -27,6 +53,7 @@ function Dataset({mode}) {
   const [eventDetails, setEventDetails] = useState({});
   const [evtPrint, setEvtPrint] = useState(<></>);
 
+
   function handleEventOnClick(index, evtbulk){
     let evt = toJSON(dataSet.iloc({rows:[index]}))[0];
     setEventDetails(evt);
@@ -34,6 +61,7 @@ function Dataset({mode}) {
     setEvtPrint(evtbulk);
   };
   const handleEventOnHide = () => setShowEventDescription(false);
+
 
   // pull in and construct data table
   function combineTimeColumnsStart(row) {
@@ -82,7 +110,6 @@ function Dataset({mode}) {
       cookie_list = cookie_list.map(Number);
       cookie_list.sort(cmp);
       displayData = dataSet.loc({rows:cookie_list});
-      // TODO: account for positions of indexes changing due to changing length of dataframe
     }
     else if(mode === "filter"){
 
@@ -150,9 +177,15 @@ function Dataset({mode}) {
 function App() {
 
   const [mode, setMode] = useState("home");
+  const [showFilterPane, setshowFilterPane] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({});
+
+  const handleFilterPaneOnHide = () => setshowFilterPane(false);
 
   function handleRoleChange(type) {
     setMode(type);
+    console.log(filterOptions);
+    if(type === "filter" & Object.keys(filterOptions).length === 0) {setshowFilterPane(true)};
   }
 
   return (
@@ -169,6 +202,7 @@ function App() {
             <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
           </Nav.Item>
         </Nav>
+        <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide}></FilterOptions>
         <Dataset mode={mode}></Dataset>
       </Container>
     </div>
