@@ -6,28 +6,39 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
+import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { colors } from "./Utils.js"
+import { colors, COOKIE_NAME } from "./Utils.js"
 import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
 import EventDescription from './EventDescription';
+import Cookies from 'universal-cookie';
 
 dayjs.extend(customParseFormat)
+const cookies = new Cookies();
 
-function Bookmark() {
+function Bookmark({index}) {
   const [starType, setStarType] = useState(faStar);
 
   function handleOnClick(){
-    // TODO: add cookie
-    if(starType === faStar){
-      setStarType(fasStar);
+    let current_cookie_list = cookies.get(COOKIE_NAME);
+    if(current_cookie_list === undefined){
+      current_cookie_list = [];
     }
     else{
+      current_cookie_list = current_cookie_list.split(",");
+    }
+    if(starType === faStar){ // add cookie
+      current_cookie_list.push(index);
+      cookies.set(COOKIE_NAME, current_cookie_list.join(","));
+      setStarType(fasStar);
+    }
+    else{ // remove cookie
       setStarType(faStar);
     }
   } 
@@ -123,7 +134,7 @@ function Dataset() {
               {eventbulk}
             </Col>
             <Col xs="2" className="text-center align-self-center">
-              <Bookmark></Bookmark>
+              <Bookmark index={index}></Bookmark>
             </Col>
           </Row>
        </ListGroup.Item>
@@ -146,7 +157,18 @@ function App() {
 
   return (
     <div className="App">
-      <Container>
+      <Container >
+        <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
+          <Nav.Item>
+            <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> All Events</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="bookmarks"><FontAwesomeIcon icon={fasStar}></FontAwesomeIcon> Bookmarks</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
+          </Nav.Item>
+        </Nav>
         <Dataset></Dataset>
       </Container>
     </div>
