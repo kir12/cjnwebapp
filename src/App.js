@@ -9,7 +9,7 @@ import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { colors, get_cookie_list } from "./Utils.js"
+import { colors, get_cookie_list, cmp } from "./Utils.js"
 import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -80,6 +80,7 @@ function Dataset({mode}) {
       let cookie_list = get_cookie_list();
       console.log(cookie_list);
       cookie_list = cookie_list.map(Number);
+      cookie_list.sort(cmp);
       displayData = dataSet.loc({rows:cookie_list});
       // TODO: account for positions of indexes changing due to changing length of dataframe
     }

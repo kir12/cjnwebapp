@@ -14,7 +14,6 @@ export default function Bookmark({index}) {
       current_cookie_list.push(index);
       cookies.set(COOKIE_NAME, current_cookie_list.join(","));
       setStarType(fasStar);
-      console.log(get_cookie_list());
     }
     else{ // remove cookie
       let cookie_idx_rm = current_cookie_list.indexOf(index.toString());
@@ -23,7 +22,6 @@ export default function Bookmark({index}) {
       }
       cookies.set(COOKIE_NAME, current_cookie_list.join(","));
       setStarType(faStar);
-      console.log(get_cookie_list());
     }
   } 
 

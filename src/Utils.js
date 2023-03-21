@@ -18,3 +18,5 @@ export function get_cookie_list(){
     }
     return current_cookie_list;
 }
+
+export function cmp(a,b) {return a > b;}
