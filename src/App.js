@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { colors } from "./Utils.js"
@@ -14,6 +15,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-regular-svg-icons';
+import EventDescription from './EventDescription';
 
 dayjs.extend(customParseFormat)
 
@@ -36,7 +38,17 @@ function Bookmark() {
 function Dataset() {
   const [dataSet, setDataSet] = useState(new DataFrame());
   const [dataUpdated, setDataUpdated] = useState(false);
+  const [showEventDescription, setShowEventDescription] = useState(false);
+  const [eventDetails, setEventDetails] = useState({});
 
+  function handleEventOnClick(index){
+    let evt = toJSON(dataSet.iloc({rows:[index]}))[0];
+    setEventDetails(evt);
+    setShowEventDescription(true);
+  };
+  const handleEventOnHide = () => setShowEventDescription(false);
+
+  // pull in and construct data table
   function combineTimeColumnsStart(row) {
     return dayjs(row[3] + " " + row[4], "M/D/YY H:mm").toISOString();
   }
@@ -99,7 +111,7 @@ function Dataset() {
       output.push(
         <ListGroup.Item key={index}>
           <Row>
-            <Col xs="10">
+            <Col xs="10" onClick={() => handleEventOnClick(index)}>
               <h3>{elem["event_title"]} </h3>
               <p>{elem["event_room"]}, {startjs.toString()} - {endjs.toString()}</p>
               <p><Badge pill className={css_class}>{elem["event_type"]}</Badge> <Badge pill bg="danger">{elem["event_age_limit"]}</Badge></p>
@@ -115,9 +127,12 @@ function Dataset() {
   }
 
   return (
-    <ListGroup>
-      {output}
-    </ListGroup>
+    <>
+      <EventDescription show_var={showEventDescription} hide_fxn={handleEventOnHide} event_package={eventDetails}></EventDescription>
+      <ListGroup>
+        {output}
+      </ListGroup>
+    </>
   );
 }
 
