@@ -1,17 +1,25 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-function EventDescription({show_var, hide_fxn, event_package}) {
+function EventDescription({show_var, hide_fxn, event_package, evt_print}) {
 
   let output = (<></>);
 
   if (event_package !== {}){
-    output = <p>im stuff :blush:</p>
+    // NOTE: maybe add bookmarking option here?
+    output = (
+      <>
+        {evt_print}
+        <p>{event_package["event_description"]}</p>
+      </>
+    );
   }
 
   return (
     <Offcanvas show={show_var} onHide={hide_fxn}>
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        <Offcanvas.Title>Event Description</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
         {output}

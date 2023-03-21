@@ -40,11 +40,13 @@ function Dataset() {
   const [dataUpdated, setDataUpdated] = useState(false);
   const [showEventDescription, setShowEventDescription] = useState(false);
   const [eventDetails, setEventDetails] = useState({});
+  const [evtPrint, setEvtPrint] = useState(<></>);
 
-  function handleEventOnClick(index){
+  function handleEventOnClick(index, evtbulk){
     let evt = toJSON(dataSet.iloc({rows:[index]}))[0];
     setEventDetails(evt);
     setShowEventDescription(true);
+    setEvtPrint(evtbulk);
   };
   const handleEventOnHide = () => setShowEventDescription(false);
 
@@ -107,14 +109,18 @@ function Dataset() {
       startjs = startjs.format(format_str);
       endjs = endjs.format(format_str);
 
+      let eventbulk = (<>
+        <h3>{elem["event_title"]} </h3>
+        <p>{elem["event_room"]}, {startjs.toString()} - {endjs.toString()}</p>
+        <p><Badge pill className={css_class}>{elem["event_type"]}</Badge> <Badge pill bg="danger">{elem["event_age_limit"]}</Badge></p>
+      </>);
+
       // generate event listing
       output.push(
         <ListGroup.Item key={index}>
           <Row>
-            <Col xs="10" onClick={() => handleEventOnClick(index)}>
-              <h3>{elem["event_title"]} </h3>
-              <p>{elem["event_room"]}, {startjs.toString()} - {endjs.toString()}</p>
-              <p><Badge pill className={css_class}>{elem["event_type"]}</Badge> <Badge pill bg="danger">{elem["event_age_limit"]}</Badge></p>
+            <Col xs="10" onClick={() => handleEventOnClick(index, eventbulk)}>
+              {eventbulk}
             </Col>
             <Col xs="2" className="text-center align-self-center">
               <Bookmark></Bookmark>
@@ -128,7 +134,7 @@ function Dataset() {
 
   return (
     <>
-      <EventDescription show_var={showEventDescription} hide_fxn={handleEventOnHide} event_package={eventDetails}></EventDescription>
+      <EventDescription show_var={showEventDescription} hide_fxn={handleEventOnHide} event_package={eventDetails} evt_print={evtPrint}></EventDescription>
       <ListGroup>
         {output}
       </ListGroup>
