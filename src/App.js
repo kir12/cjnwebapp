@@ -138,7 +138,11 @@ function Dataset({mode, param_fxn}) {
     else{
 
     }
-    
+   
+    if(displayData.index.length > 0){
+      displayData = displayData.sortValues("combinedStart",{acending: true});
+    }
+
     let jsonexport = toJSON(displayData);
     jsonexport.forEach(function (elem, index_) {
 
@@ -215,30 +219,30 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Container >
-        <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
-          <Nav.Item onClick={() => handleRoleChange("home")}>
-            <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>
-          </Nav.Item>
-          <Nav.Item onClick={() => handleRoleChange("bookmarks")}>
-            <Nav.Link eventKey="bookmarks"><FontAwesomeIcon icon={fasStar}></FontAwesomeIcon> Bookmarks</Nav.Link>
-          </Nav.Item>
-          <Nav.Item onClick={() => handleRoleChange("filter")}>
-            <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
-        <Dataset mode={mode} param_fxn={dualLink}></Dataset>
-      </Container>
-
+    <>
+      <div className="App">
+        <Container >
+          <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
+            <Nav.Item onClick={() => handleRoleChange("home")}>
+              <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>
+            </Nav.Item>
+            <Nav.Item onClick={() => handleRoleChange("bookmarks")}>
+              <Nav.Link eventKey="bookmarks"><FontAwesomeIcon icon={fasStar}></FontAwesomeIcon> Bookmarks</Nav.Link>
+            </Nav.Item>
+            <Nav.Item onClick={() => handleRoleChange("filter")}>
+              <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
+            </Nav.Item>
+          </Nav>
+          <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
+          <Dataset mode={mode} param_fxn={dualLink}></Dataset>
+        </Container>
+      </div>
       <Container fluid className="d-flex justify-content-evenly footer">
-        <p className="mb-0"><a href="" className="text-black">About App</a></p>
+        <p className="mb-0"><a href="https://github.com/kir12/cjnwebapp" target="_blank" className="text-black">About App</a></p>
         <p className="mb-0"><a href = "" className="text-black">Con Info</a></p>
         <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black">Best Waifu</a></p>
       </Container>
-
-    </div>
+    </>
   );
 }
 
