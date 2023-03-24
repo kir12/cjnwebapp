@@ -5,11 +5,9 @@ import events from './events.csv';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Modal from 'react-bootstrap/Modal';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Accordion from 'react-bootstrap/Accordion';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { colors, get_cookie_list, cmp } from "./Utils.js"
@@ -19,49 +17,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg-icons';
 import EventDescription from './EventDescription';
 import Bookmark from "./Bookmark";
-import Offcanvas from 'react-bootstrap/Offcanvas';
+import FilterOptions from "./FilterOptions"
+import Button from 'react-bootstrap/Button';
 
 dayjs.extend(customParseFormat)
 
-function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
-  // NOTE: form is just a placeholder for now
-
-  let formOut = <></>;
-  if(Object.keys(filterOptions).length !== 0){
-    console.log(filterOptions);
-  }
+function MoreInfo({show, handleClose}) {
 
   return (
-    <Offcanvas show={show_var} onHide={hide_fxn} placement={"end"}>
-      <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Filter Options</Offcanvas.Title>
-      </Offcanvas.Header>
-      <Offcanvas.Body>
-
-        <Form>
-          <Accordion alwaysOpen>
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Filter by Room</Accordion.Header>
-              <Accordion.Body>
-                <Form.Group>
-                  <Form.Check type='checkbox' id = 'test1' label='Test Label' />
-                </Form.Group>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>Filter by Event Type</Accordion.Header>
-              <Accordion.Body>
-                <Form.Group>
-                  <Form.Check type='checkbox' id = 'test2' label='Test Label 2' />
-                </Form.Group>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-          <Button type="submit" className = "mt-3">Submit</Button>
-        </Form>
-
-      </Offcanvas.Body>
-    </Offcanvas>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Other Con Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h5>Other Cons</h5>
+          <h5>Sponsors and Affiliates</h5>
+          <ul>
+            <li>Ontaku</li>
+            <li>DCC</li>
+            <li>CJS</li>
+          </ul>
+          <h5>Donate to Animania</h5>
+          <p>Animania would appreciate donations of any amount to ensure that large events like Con Ja Nai can continue to be organized into the future.</p>
+          <p>If you are interested, please send any monetary contributions to our Venmo at @Animania. Thank you very much for your support!</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+           Close 
+          </Button>
+        </Modal.Footer>
+      </Modal>
   );
 }
 
@@ -205,6 +190,10 @@ function App() {
   const [showFilterPane, setshowFilterPane] = useState(false);
   const [filterOptions, setFilterOptions] = useState({});
 
+  const [showModal, setShowModal] = useState(false);
+  const handleModalOnClick = () => setShowModal(true);
+  const handleModalOnHide = () => setShowModal(false);
+
   const handleFilterPaneOnHide = () => setshowFilterPane(false);
 
   function handleRoleChange(type) {
@@ -237,9 +226,10 @@ function App() {
           <Dataset mode={mode} param_fxn={dualLink}></Dataset>
         </Container>
       </div>
+      <MoreInfo show={showModal} handleClose={handleModalOnHide}></MoreInfo>
       <Container fluid className="d-flex justify-content-evenly footer">
         <p className="mb-0"><a href="https://github.com/kir12/cjnwebapp" target="_blank" className="text-black">About App</a></p>
-        <p className="mb-0"><a href = "" className="text-black">Con Info</a></p>
+        <p className="mb-0"><a href="//:0" className="text-black" onClick={handleModalOnClick}>Con Info</a></p>
         <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black">Best Waifu</a></p>
       </Container>
     </>
