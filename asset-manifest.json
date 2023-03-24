@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/cjnwebapp/static/css/main.0a863999.css",
-    "main.js": "/cjnwebapp/static/js/main.c6cf3f8e.js",
+    "main.css": "/cjnwebapp/static/css/main.f6e61baf.css",
+    "main.js": "/cjnwebapp/static/js/main.7ac852ee.js",
     "static/js/787.487f2103.chunk.js": "/cjnwebapp/static/js/787.487f2103.chunk.js",
-    "static/media/events.tsv": "/cjnwebapp/static/media/events.78b3a7ba3b20538afb11.tsv",
+    "static/media/events.csv": "/cjnwebapp/static/media/events.806494c223bb7e12d38a.csv",
     "index.html": "/cjnwebapp/index.html",
-    "main.0a863999.css.map": "/cjnwebapp/static/css/main.0a863999.css.map",
-    "main.c6cf3f8e.js.map": "/cjnwebapp/static/js/main.c6cf3f8e.js.map",
+    "main.f6e61baf.css.map": "/cjnwebapp/static/css/main.f6e61baf.css.map",
+    "main.7ac852ee.js.map": "/cjnwebapp/static/js/main.7ac852ee.js.map",
     "787.487f2103.chunk.js.map": "/cjnwebapp/static/js/787.487f2103.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0a863999.css",
-    "static/js/main.c6cf3f8e.js"
+    "static/css/main.f6e61baf.css",
+    "static/js/main.7ac852ee.js"
   ]
 }
