@@ -50,3 +50,18 @@
 .black {background-color: black !important;color:white !important}
 .silver {background-color: silver !important;color:black !important}
 .gray {background-color: gray !important;color:black !important}
+
+.footer{
+  padding: 1em;
+  background-color: lightgray;
+  margin-top: 0.5em;
+}
+
+.footer a:link {
+  text-decoration: none !important;
+}
+
+.footer p:hover a, .footer p:active a{
+  text-decoration: underline !important;
+}
+

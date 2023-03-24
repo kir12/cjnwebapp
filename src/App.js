@@ -18,11 +18,18 @@ import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg
 import EventDescription from './EventDescription';
 import Bookmark from "./Bookmark";
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Navbar from 'react-bootstrap/Navbar';
 
 dayjs.extend(customParseFormat)
 
-function FilterOptions({show_var, hide_fxn}) {
+function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
   // NOTE: form is just a placeholder for now
+
+  let formOut = <></>;
+  if(Object.keys(filterOptions).length !== 0){
+    formOut= <p>test</p>;
+  }
+
   return (
     <Offcanvas show={show_var} onHide={hide_fxn} placement={"end"}>
       <Offcanvas.Header closeButton>
@@ -30,23 +37,14 @@ function FilterOptions({show_var, hide_fxn}) {
       </Offcanvas.Header>
       <Offcanvas.Body>
 
-        <Form>
-          <Form.Group className="mb-3" controlId="formGroupEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formGroupPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-        </Form>
+        {formOut}
 
       </Offcanvas.Body>
     </Offcanvas>
   );
 }
 
-function Dataset({mode}) {
+function Dataset({mode, param_fxn}) {
   const [dataSet, setDataSet] = useState(new DataFrame());
   const [dataUpdated, setDataUpdated] = useState(false);
   const [showEventDescription, setShowEventDescription] = useState(false);
@@ -55,7 +53,7 @@ function Dataset({mode}) {
 
 
   function handleEventOnClick(index, evtbulk){
-    let evt = toJSON(dataSet.iloc({rows:[index]}))[0];
+    let evt = toJSON(dataSet.loc({rows:[index]}))[0];
     setEventDetails(evt);
     setShowEventDescription(true);
     setEvtPrint(evtbulk);
@@ -84,6 +82,11 @@ function Dataset({mode}) {
         data = data.sortValues("combinedStart",{ascending:true});
         data = data.addColumn("uniqueID",data.index, {axis:1});
 
+
+        let event_types = toJSON(data["event_type"].unique())[0];
+        let room_list = toJSON(data["event_room"].unique())[0];
+        let params = {'event_types':event_types, 'room_list': room_list};
+        param_fxn(params, 'toFilterOptions');
         // optional: drop original time parameters
 
         setDataSet(data);
@@ -185,7 +188,13 @@ function App() {
   function handleRoleChange(type) {
     setMode(type);
     console.log(filterOptions);
-    if(type === "filter" & Object.keys(filterOptions).length === 0) {setshowFilterPane(true)};
+    if(type === "filter" & !('activeFilter' in filterOptions)) {setshowFilterPane(true)};
+  }
+
+  function dualLink(params, mode) {
+    if(mode === "toFilterOptions"){
+      setFilterOptions(params);
+    }
   }
 
   return (
@@ -202,9 +211,16 @@ function App() {
             <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
           </Nav.Item>
         </Nav>
-        <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide}></FilterOptions>
-        <Dataset mode={mode}></Dataset>
+        <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
+        <Dataset mode={mode} param_fxn={dualLink}></Dataset>
       </Container>
+
+      <Container fluid className="d-flex justify-content-evenly footer">
+        <p className="mb-0"><a href="" className="text-black">About App</a></p>
+        <p className="mb-0"><a href = "" className="text-black">Con Info</a></p>
+        <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black">Best Waifu</a></p>
+      </Container>
+
     </div>
   );
 }
