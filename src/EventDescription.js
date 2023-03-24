@@ -11,7 +11,7 @@ function EventDescription({show_var, hide_fxn, event_package, evt_print}) {
     output = (
       <>
         {evt_print}
-        <p>{event_package["event_description"]}</p>
+        <p className="eventDescription">{event_package["event_description"]}</p>
       </>
     );
   }

@@ -1,13 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { readCSV, DataFrame, toJSON } from 'danfojs';
-import events from './events.tsv';
+import events from './events.csv';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import Nav from 'react-bootstrap/Nav';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Accordion from 'react-bootstrap/Accordion';
 import { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { colors, get_cookie_list, cmp } from "./Utils.js"
@@ -18,7 +20,6 @@ import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg
 import EventDescription from './EventDescription';
 import Bookmark from "./Bookmark";
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import Navbar from 'react-bootstrap/Navbar';
 
 dayjs.extend(customParseFormat)
 
@@ -27,7 +28,7 @@ function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
 
   let formOut = <></>;
   if(Object.keys(filterOptions).length !== 0){
-    formOut= <p>test</p>;
+    console.log(filterOptions);
   }
 
   return (
@@ -37,7 +38,27 @@ function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
       </Offcanvas.Header>
       <Offcanvas.Body>
 
-        {formOut}
+        <Form>
+          <Accordion alwaysOpen>
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Filter by Room</Accordion.Header>
+              <Accordion.Body>
+                <Form.Group>
+                  <Form.Check type='checkbox' id = 'test1' label='Test Label' />
+                </Form.Group>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header>Filter by Event Type</Accordion.Header>
+              <Accordion.Body>
+                <Form.Group>
+                  <Form.Check type='checkbox' id = 'test2' label='Test Label 2' />
+                </Form.Group>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+          <Button type="submit" className = "mt-3">Submit</Button>
+        </Form>
 
       </Offcanvas.Body>
     </Offcanvas>
@@ -82,7 +103,6 @@ function Dataset({mode, param_fxn}) {
         data = data.sortValues("combinedStart",{ascending:true});
         data = data.addColumn("uniqueID",data.index, {axis:1});
 
-
         let event_types = toJSON(data["event_type"].unique())[0];
         let room_list = toJSON(data["event_room"].unique())[0];
         let params = {'event_types':event_types, 'room_list': room_list};
@@ -101,8 +121,6 @@ function Dataset({mode, param_fxn}) {
   let output = [];
 
   if (dataUpdated) {
-
-    dataSet.print();
 
     let event_types = toJSON(dataSet["event_type"].unique())[0];
 
@@ -187,7 +205,6 @@ function App() {
 
   function handleRoleChange(type) {
     setMode(type);
-    console.log(filterOptions);
     if(type === "filter" & !('activeFilter' in filterOptions)) {setshowFilterPane(true)};
   }
 
