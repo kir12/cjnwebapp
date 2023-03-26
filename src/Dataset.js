@@ -8,12 +8,12 @@ import { colors, get_cookie_list, cmp } from "./Utils.js"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
-import { readCSV, DataFrame, toJSON } from 'danfojs';
+import { readCSV, DataFrame, toJSON, Series } from 'danfojs';
 import events from './events.csv';
 
 dayjs.extend(customParseFormat)
 
-export default function Dataset({mode, param_fxn}) {
+export default function Dataset({mode, param_fxn, appliedFilters}) {
   const [dataSet, setDataSet] = useState(new DataFrame());
   const [dataUpdated, setDataUpdated] = useState(false);
   const [showEventDescription, setShowEventDescription] = useState(false);
@@ -81,7 +81,16 @@ export default function Dataset({mode, param_fxn}) {
       displayData = dataSet.loc({rows:cookie_list});
     }
     else if(mode === "filter"){
-
+        
+        console.log(appliedFilters["event_types"].length < 1);
+        
+        if(appliedFilters["event_types"].length < 1){
+            let result = displayData.event_type.map((param) => {return appliedFilters["event_types"].indexOf(param) !== -1});
+            displayData = displayData[result];
+        }
+        // if(appliedFilters["room_list"] !== []){
+        //     displayData = displayData[displayData.event_room.ne(eventSeries)];
+        // }
     }
     else{
 

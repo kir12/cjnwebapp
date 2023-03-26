@@ -24,13 +24,11 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
     else{
       stack[type].push(elem);
     }
-    console.log(stack);
   }
 
   let eventtypes = [];
   let rooms = [];
   if(Object.keys(filterOptions).length !== 0){
-    console.log(filterOptions);
     for(const elem of filterOptions["event_types"]) {
       let defaultChecked = stack["event_types"].includes(elem);
       eventtypes.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem} onClick={() => foo(elem, "event_types")}></Form.Check>);
