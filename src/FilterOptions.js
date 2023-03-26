@@ -13,7 +13,7 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
   // TODO: figure out how to preserve?
   function handleSubmit(e) {
     e.preventDefault();
-    param_fxn(stack);
+    param_fxn(stack, "toDataSet");
     hide_fxn();
   }
 
