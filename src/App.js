@@ -15,6 +15,7 @@ import dayjs from 'dayjs';
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faDiscord } from '@fortawesome/free-brands-svg-icons';
 import EventDescription from './EventDescription';
 import Bookmark from "./Bookmark";
 import FilterOptions from "./FilterOptions"
@@ -27,15 +28,16 @@ function MoreInfo({show, handleClose}) {
   return (
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Other Con Info</Modal.Title>
+          <Modal.Title>More Con Info</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h5>Other Cons</h5>
+          <h4><a href="http://www.conjanai.org/" target="_blank" rel="noreferrer">Con Ja Nai XXVII</a></h4>
+            <p>A free mini-anime convention hosted by Animania, U of M's anime club</p>
           <h5>Sponsors and Affiliates</h5>
           <ul>
-            <li>Ontaku</li>
+            <li><a href="https://maizepages.umich.edu/organization/ontaku" target="_blank" rel="noreferrer">Ontaku</a> (<a href="https://discord.gg/UQze7V7" target="_blank" rel="noreferrer"><FontAwesomeIcon icon={faDiscord}></FontAwesomeIcon> Discord</a>)</li>
             <li>DCC</li>
-            <li>CJS</li>
+            <li><a href="https://ii.umich.edu/cjs" target="_blank" rel="noreferrer">U of M Center of Japanese Studies</a></li>
           </ul>
           <h5>Donate to Animania</h5>
           <p>Animania would appreciate donations of any amount to ensure that large events like Con Ja Nai can continue to be organized into the future.</p>
@@ -228,9 +230,9 @@ function App() {
       </div>
       <MoreInfo show={showModal} handleClose={handleModalOnHide}></MoreInfo>
       <Container fluid className="d-flex justify-content-evenly footer">
-        <p className="mb-0"><a href="https://github.com/kir12/cjnwebapp" target="_blank" className="text-black">About App</a></p>
-        <p className="mb-0"><a href="//:0" className="text-black" onClick={handleModalOnClick}>Con Info</a></p>
-        <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black">Best Waifu</a></p>
+        <p className="mb-0"><a href="https://github.com/kir12/cjnwebapp" target="_blank" className="text-black" rel="noreferrer">About App</a></p>
+        <p className="mb-0"><a href="javascript:;" className="text-black" onClick={handleModalOnClick} rel="noreferrer">Con Info</a></p>
+        <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black" rel="noreferrer">Best Waifu</a></p>
       </Container>
     </>
   );
