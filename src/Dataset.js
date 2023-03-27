@@ -82,12 +82,16 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     }
     else if(mode === "filter"){
         
-        console.log(appliedFilters["event_types"].length < 1);
-        
-        if(appliedFilters["event_types"].length < 1){
-            let result = displayData.event_type.map((param) => {return appliedFilters["event_types"].indexOf(param) !== -1});
-            displayData = displayData[result];
+        if(appliedFilters["event_types"].length > 0){
+            let result = dataSet.event_type.map((param) => {return appliedFilters["event_types"].includes(param)});
+            displayData = dataSet.loc({rows: result.values});
         }
+
+        if(appliedFilters["room_list"].length > 0){
+            let result = displayData.event_room.map((param) => {return appliedFilters["room_list"].includes(param)});
+            displayData = displayData.loc({rows: result.values});
+        }
+ 
         // if(appliedFilters["room_list"] !== []){
         //     displayData = displayData[displayData.event_room.ne(eventSeries)];
         // }
