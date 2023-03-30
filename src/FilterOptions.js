@@ -24,7 +24,6 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
     else{
       stack[type].push(elem);
     }
-    console.log(stack[type]);
   }
 
   let eventtypes = [];

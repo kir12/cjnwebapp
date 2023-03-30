@@ -59,7 +59,7 @@ function App() {
       <MoreInfo show={showModal} handleClose={handleModalOnHide}></MoreInfo>
       <Container fluid className="d-flex justify-content-evenly footer">
         <p className="mb-0"><a href="https://github.com/kir12/cjnwebapp" target="_blank" className="text-black" rel="noreferrer">About App</a></p>
-        <p className="mb-0"><a href="javascript:;" className="text-black" onClick={handleModalOnClick} rel="noreferrer">Con Info</a></p>
+        <p className="mb-0"><a href="#0" className="text-black" onClick={handleModalOnClick} rel="noreferrer">Con Info</a></p>
         <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black" rel="noreferrer">Best Waifu</a></p>
       </Container>
     </>
