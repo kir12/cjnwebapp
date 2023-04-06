@@ -40,7 +40,7 @@ function App() {
   return (
     <>
       <div className="App">
-        <Container >
+        <Container id="infobody2">
           <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
             <Nav.Item onClick={() => handleRoleChange("home")}>
               <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>

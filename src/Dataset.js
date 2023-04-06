@@ -66,6 +66,19 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
 
   });
 
+  function noResults() {
+    return (
+      <div className="row d-flex align-items-center justify-content-center" id="infobody">
+        <div className="col-sm-6 text-center opacity-75">
+          <p className="small mb-0"><a href="https://twitter.com/sobamushi_mo/status/1399661514043232259" target="blank" rel="noreferrer">Source</a></p>
+          <img src = "/noresults.jpg" className="img-fluid"></img>
+          <h5>No Results</h5>
+          <p>Try setting some bookmarks or adjusting your filter options</p>
+        </div>
+      </div>
+    );
+  }
+
   let output = [];
 
   if (dataUpdated) {
@@ -156,6 +169,7 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
       <ListGroup>
         {output}
       </ListGroup>
+      {output.length < 1 ? noResults() : <></>}
     </>
   );
 }

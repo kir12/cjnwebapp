@@ -65,6 +65,18 @@
   white-space: pre-line;
 }
 
-.App {
+#infobody {
+  min-height: calc(100vh - 64px - 40px);
+}
+
+#infobody2 {
   min-height: calc(100vh - 64px);
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height:100%;
 }
