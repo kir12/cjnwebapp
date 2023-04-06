@@ -12,9 +12,13 @@ To adapt this project to fit needs of your convention, the below steps may be us
 2. `git clone` it to your local directory
 3. `cd /path/to/project/cjnwebapp` and `npm install` (you will need NPM installed)
 4. Modify `src/events.csv` to replace with your convention's events. Several notes:
+    
     a. It is **highly** recommended to open the CSV file in a spreadsheet editor of your choice. (e.g. Excel, Google Sheets, etc.) If you do so, be sure to save out to a CSV file with the `,` character used for column separation
+        
     b. The formatting used in the datetime columns need to be precisely followed
+        
     c. The `event_age_limit` column supports a variety of limits (e.g. "13+", "18+", etc.)
+        
 5. Modify the contents of `MoreInfo.js` (namely the stuff inside the `<Modal.Body>`) for details specific to your con
 6. The "Best Waifu" entry in the footer can be removed at the bottom of `src/App.js` if you wish
 7. Modify `public/CNAME` to the website domain of your choice. This project by default uses GitHub Pages for web hosting (by virtue of it being free) so usually this should be `<yourusername>.github.io/cjnwebapp`
