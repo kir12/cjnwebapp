@@ -4,6 +4,8 @@ cjnwebapp is a web application that seeks to create a user-friendly schedule app
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Website currently up at [https://schedule.conjanai.org](https://schedule.conjanai.org)
+
 ## Adapting this Schedule for Your Convention
 
 To adapt this project to fit needs of your convention, the below steps may be useful.
