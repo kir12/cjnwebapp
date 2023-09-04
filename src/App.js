@@ -8,6 +8,8 @@ import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg
 import FilterOptions from "./FilterOptions"
 import MoreInfo from "./MoreInfo";
 import Dataset from "./Dataset";
+import Navbar from 'react-bootstrap/Navbar';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function App() {
 
@@ -41,6 +43,26 @@ function App() {
     <>
       <div className="App">
         <Container id="infobody2">
+          <Navbar expand={false}>
+            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-false`} />
+            <Navbar.Brand>Test Brand</Navbar.Brand>
+            <Navbar.Offcanvas
+              id={`offcanvasNavbar-expand-false`}
+              aria-labelledby={`offcanvasNavbarLabel-expand-false`}
+              placement="start"
+            >
+              <Offcanvas.Header closeButton>
+                  <Offcanvas.Title id={`offcanvasNavbarLabel-expand-false`}>
+                    Offcanvas
+                  </Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link href="#action1">Home</Nav.Link>
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Navbar> 
           <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
             <Nav.Item onClick={() => handleRoleChange("home")}>
               <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>
