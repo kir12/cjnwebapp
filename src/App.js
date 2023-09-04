@@ -45,7 +45,7 @@ function App() {
     <>
       <div className="App">
         <Container id="infobody2">
-          <Navbar expand={false}>
+          <Navbar expand={false} className="sticky-top mb-2" bg="light" data-bs-theme="light">
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-false`} />
             <Navbar.Brand className="ms-2">
               <NavDropdown title="7/26">
@@ -76,24 +76,21 @@ function App() {
             </Navbar.Offcanvas>
             <div className="d-flex order-1 ms-auto">
               <Nav className="flex-row">
-                <Nav.Link href="#home" className="me-2"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
-                <Nav.Link href="#home" className="me-2"><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link>
+                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
+                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link>
               </Nav>
             </div>
           </Navbar> 
-          <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
+          <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
+          <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
+          <Nav fill variant="pills" defaultActiveKey="home" className="sticky-bottom bg-white shadow-sm mt-2">
             <Nav.Item onClick={() => handleRoleChange("home")}>
               <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>
             </Nav.Item>
             <Nav.Item onClick={() => handleRoleChange("bookmarks")}>
               <Nav.Link eventKey="bookmarks"><FontAwesomeIcon icon={fasStar}></FontAwesomeIcon> Bookmarks</Nav.Link>
             </Nav.Item>
-            <Nav.Item onClick={() => handleRoleChange("filter")}>
-              <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
-            </Nav.Item>
           </Nav>
-          <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
-          <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
         </Container>
       </div>
       <MoreInfo show={showModal} handleClose={handleModalOnHide}></MoreInfo>
