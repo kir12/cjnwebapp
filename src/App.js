@@ -4,11 +4,13 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as fasStar, faFilter, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fasStar, faFilter, faBook, faMagnifyingGlass, faCircleInfo, faMagicWandSparkles, faLocationDot, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import FilterOptions from "./FilterOptions"
 import MoreInfo from "./MoreInfo";
 import Dataset from "./Dataset";
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function App() {
@@ -45,7 +47,13 @@ function App() {
         <Container id="infobody2">
           <Navbar expand={false}>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-false`} />
-            <Navbar.Brand>Test Brand</Navbar.Brand>
+            <Navbar.Brand className="ms-2">
+              <NavDropdown title="7/26">
+                <NavDropdown.Item>7/25</NavDropdown.Item>
+                <NavDropdown.Item>7/26</NavDropdown.Item>
+                <NavDropdown.Item>7/27</NavDropdown.Item>
+              </NavDropdown>
+            </Navbar.Brand>
             <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-false`}
               aria-labelledby={`offcanvasNavbarLabel-expand-false`}
@@ -53,15 +61,25 @@ function App() {
             >
               <Offcanvas.Header closeButton>
                   <Offcanvas.Title id={`offcanvasNavbarLabel-expand-false`}>
-                    Offcanvas
+                   Con Ja Nai 2023 
                   </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="#action1">Home</Nav.Link>
+                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon> Directions & Parking</Nav.Link>
+                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faMapLocationDot}></FontAwesomeIcon> Convention Center Map</Nav.Link>
+                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faCircleInfo}></FontAwesomeIcon> About The Con</Nav.Link>
+                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faGithub}></FontAwesomeIcon> About App</Nav.Link>
+                  <Nav.Link href="#action2"><FontAwesomeIcon icon={faMagicWandSparkles}></FontAwesomeIcon> Best Girl</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
+            <div className="d-flex order-1 ms-auto">
+              <Nav className="flex-row">
+                <Nav.Link href="#home" className="me-2"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
+                <Nav.Link href="#home" className="me-2"><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link>
+              </Nav>
+            </div>
           </Navbar> 
           <Nav fill variant="pills" defaultActiveKey="home" className="sticky-top bg-white shadow-sm">
             <Nav.Item onClick={() => handleRoleChange("home")}>
