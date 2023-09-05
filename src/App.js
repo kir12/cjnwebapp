@@ -4,9 +4,10 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as fasStar, faFilter, faBook, faMagnifyingGlass, faCircleInfo, faMagicWandSparkles, faLocationDot, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fasStar, faFilter, faBook, faMagnifyingGlass, faCircleInfo, faHeart, faLocationDot, faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import FilterOptions from "./FilterOptions"
+import MenuPage from "./MenuPage"
 import MoreInfo from "./MoreInfo";
 import Dataset from "./Dataset";
 import Navbar from 'react-bootstrap/Navbar';
@@ -27,6 +28,10 @@ function App() {
 
   const [appliedFilters, setAppliedFilters] = useState({"event_types": [], "room_list": []});
 
+  // TODO: when con-specific data is ripped to its own file, this will need to be adjusted
+  // to be automatically set to the number of detected MenuPage components
+  const [menupagebools, setMenuPages] = useState([false, false]);
+
   function handleRoleChange(type) {
     setMode(type);
     if(type === "filter" & !('activeFilter' in filterOptions)) {setshowFilterPane(true)};
@@ -41,11 +46,28 @@ function App() {
     }
   }
 
+  // TODO: apparently this is possible???
+  let test = {"test": (<p>hello world</p>)};
+
+  let menupages = (
+    <div>
+      <MenuPage>
+        <MenuPage.Header><FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon> Directions & Parking</MenuPage.Header>
+        <MenuPage.Body>test</MenuPage.Body>
+      </MenuPage> 
+      <MenuPage>
+        <MenuPage.Header><FontAwesomeIcon icon={faMapLocationDot}></FontAwesomeIcon> Convention Center Map</MenuPage.Header>
+        <MenuPage.Body>test</MenuPage.Body>
+      </MenuPage>
+    </div>
+  );
+
   return (
     <>
       <div className="App">
-        <Container id="infobody2">
-          <Navbar expand={false} className="sticky-top mb-2" bg="light" data-bs-theme="light">
+
+        <Navbar collapseOnSelect expand={false} className="sticky-top mb-2 shadow-sm" bg="light" data-bs-theme="light">
+          <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-false`} />
             <Navbar.Brand className="ms-2">
               <NavDropdown title="7/26">
@@ -61,16 +83,14 @@ function App() {
             >
               <Offcanvas.Header closeButton>
                   <Offcanvas.Title id={`offcanvasNavbarLabel-expand-false`}>
-                   Con Ja Nai 2023 
+                    Con Ja Nai 2023 
                   </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon> Directions & Parking</Nav.Link>
-                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faMapLocationDot}></FontAwesomeIcon> Convention Center Map</Nav.Link>
-                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faCircleInfo}></FontAwesomeIcon> About The Con</Nav.Link>
-                  <Nav.Link href="#action1"><FontAwesomeIcon icon={faGithub}></FontAwesomeIcon> About App</Nav.Link>
-                  <Nav.Link href="#action2"><FontAwesomeIcon icon={faMagicWandSparkles}></FontAwesomeIcon> Best Girl</Nav.Link>
+                  <Nav.Link href="#action1" onClick={handleModalOnClick}><FontAwesomeIcon icon={faCircleInfo}></FontAwesomeIcon> About The Con</Nav.Link>
+                  <Nav.Link href="https://github.com/kir12/cjnwebapp" target="_blank"><FontAwesomeIcon icon={faGithub}></FontAwesomeIcon> About App</Nav.Link>
+                  <Nav.Link href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank"><FontAwesomeIcon icon={faHeart}></FontAwesomeIcon> Best Girl</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
@@ -80,7 +100,10 @@ function App() {
                 <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link>
               </Nav>
             </div>
-          </Navbar> 
+          </Container>
+        </Navbar> 
+
+        <Container id="infobody2">
           <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
           <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
           <Nav fill variant="pills" defaultActiveKey="home" className="sticky-bottom bg-white shadow-sm mt-2">
@@ -94,11 +117,6 @@ function App() {
         </Container>
       </div>
       <MoreInfo show={showModal} handleClose={handleModalOnHide}></MoreInfo>
-      <Container fluid className="d-flex justify-content-evenly footer">
-        <p className="mb-0"><a href="https://github.com/kir12/cjnwebapp" target="_blank" className="text-black" rel="noreferrer">About App</a></p>
-        <p className="mb-0"><a href="#0" className="text-black" onClick={handleModalOnClick} rel="noreferrer">Con Info</a></p>
-        <p className="mb-0"><a href="https://www.google.com/search?q=marisa+kirisame&client=firefox-b-1-d&source=lnms&tbm=isch&sa=X&ved=2ahUKEwioqcvz4fT9AhW2kYkEHTCND3AQ0pQJegQIBBAC&biw=1920&bih=884&dpr=1" target="_blank" className="text-black" rel="noreferrer">Best Waifu</a></p>
-      </Container>
     </>
   );
 }
