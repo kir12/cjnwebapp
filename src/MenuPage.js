@@ -3,9 +3,14 @@
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useState } from 'react';
 
-export default function MenuPage({ show_var, hide_fxn, children }) {
+export default function MenuPage({ show_var, hide_fxn, idx, children }) {
+    
+    function handleHide() {
+        hide_fxn(idx, false);
+    }
+
     return (
-        <Offcanvas show={show_var} onHide={hide_fxn} placement={"end"}>
+        <Offcanvas show={show_var} onHide={handleHide} placement={"end"}>
             {children}
         </Offcanvas>
     );
@@ -13,7 +18,7 @@ export default function MenuPage({ show_var, hide_fxn, children }) {
 
 function Header({children}) {
     return (
-        <Offcanvas.Header>
+        <Offcanvas.Header closeButton>
             <Offcanvas.Title>{children}</Offcanvas.Title>
         </Offcanvas.Header>
     );
