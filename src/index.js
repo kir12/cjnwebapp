@@ -12,23 +12,23 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // TODO: export out as prop when con-specific code is ripped out to its own file
 let menupagedata = [
   {
-    "header": (<><FontAwesomeIcon icon={faLocationDot}></FontAwesomeIcon> Directions</>),
+    "header": (<><FontAwesomeIcon icon={faLocationDot} fixedWidth></FontAwesomeIcon> Directions</>),
     "body": (<>test</>)
   },
   {
-    "header": (<><FontAwesomeIcon icon={faSquareParking}></FontAwesomeIcon> Parking</>),
+    "header": (<><FontAwesomeIcon icon={faSquareParking} fixedWidth></FontAwesomeIcon> Parking</>),
     "body": (<>test</>)
   },
   {
-    "header": (<><FontAwesomeIcon icon={faMapLocationDot}></FontAwesomeIcon> Convention Center & Map</>),
+    "header": (<><FontAwesomeIcon icon={faMapLocationDot} fixedWidth></FontAwesomeIcon> Convention Center & Map</>),
     "body": (<>test</>)
   },
   {
-    "header": (<><FontAwesomeIcon icon={faUtensils}></FontAwesomeIcon> Nearby Restaraunts</>),
+    "header": (<><FontAwesomeIcon icon={faUtensils} fixedWidth></FontAwesomeIcon> Nearby Restaraunts</>),
     "body": (<>test</>)
   },
   {
-    "header": (<><FontAwesomeIcon icon={faCircleInfo}></FontAwesomeIcon> About The Con</>),
+    "header": (<><FontAwesomeIcon icon={faCircleInfo} fixedWidth></FontAwesomeIcon> About The Con</>),
     "body": (
       <>
         <h4><a href="http://www.conjanai.org/" target="_blank" rel="noreferrer">Con Ja Nai XXVII</a></h4>
