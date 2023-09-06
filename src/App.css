@@ -47,30 +47,13 @@
 .silver {background-color: silver !important;color:black !important}
 .gray {background-color: gray !important;color:black !important}
 
-.footer{
-  padding: 1em;
-  background-color: lightgray;
-  margin-top: 0.5em;
-}
-
-.footer a:link {
-  text-decoration: none !important;
-}
-
-.footer p:hover a, .footer p:active a{
-  text-decoration: underline !important;
-}
-
 .eventDescription {
   white-space: pre-line;
 }
 
-#infobody {
-  min-height: calc(100vh - 64px - 40px);
-}
-
+/* manually adjust the height of navbar and footer as fix to floating footer problem */
 #infobody2 {
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 56px - 40px);
 }
 
 html {
