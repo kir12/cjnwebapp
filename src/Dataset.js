@@ -14,6 +14,8 @@ import Papa from 'papaparse';
 
 dayjs.extend(customParseFormat)
 
+
+
 export default function Dataset({mode, param_fxn, appliedFilters}) {
   const [dataSet, setDataSet] = useState(new DataFrame());
   const [dataUpdated, setDataUpdated] = useState(false);
@@ -40,6 +42,14 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     return dayjs(row[5] + " " + row[6], "M/D/YY H:mm").toISOString();
   }
 
+  function addColumn(data, column_name, data_column) {
+    let output = data.map(function(row, index) {
+      row[column_name] = data_column[index];
+      return row;
+    })
+    return output;
+  }
+
   useEffect(() => {
 
     const fetchData = async () => {
@@ -62,6 +72,25 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
         setDataUpdated(true);
       }
     }
+
+    Papa.parse(events, {
+      header: true,
+      download: true,
+      dynamicTyping: true,
+      complete: function(results) {
+        let newdata = results.data;
+        newdata = addColumn(newdata, "combinedStart", newdata.map((row) => {
+          return dayjs(row["event_start_day"] + " " + row["event_start_time"], "M/D/YY H:mm").toISOString();
+        }));
+        newdata = addColumn(newdata, "combinedEnd", newdata.map((row) => {
+          return dayjs(row["event_end_day"] + " " + row["event_end_time"], "M/D/YY H:mm").toISOString();
+        }));
+        // TODO: sort function, add unique id
+        // check for correctness on parsing CSV files and make corrections as necessary
+
+        console.log(newdata);
+      }
+    });
 
     fetchData().catch(console.error);
 
@@ -86,15 +115,7 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
   // },"false",);
   // reader.readAsText(events);
 
-  Papa.parse(events, {
-    header: true,
-    download: true,
-    dynamicTyping: true,
-    complete: function(results) {
-      console.log(results.data);
-    }
-  });
-
+  
   let output = [];
   // const records = parse(events, {columns: true, skip_empty_lines: true});
   // console.log(records);
