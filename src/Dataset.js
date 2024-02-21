@@ -10,6 +10,7 @@ import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
 import { readCSV, DataFrame, toJSON } from 'danfojs';
 import events from './events.csv';
+import Papa from 'papaparse';
 
 dayjs.extend(customParseFormat)
 
@@ -79,7 +80,24 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     );
   }
 
+  // const reader = new FileReader();
+  // reader.addEventListener("load", () => {
+  //   console.log(reader.result);
+  // },"false",);
+  // reader.readAsText(events);
+
+  Papa.parse(events, {
+    header: true,
+    download: true,
+    dynamicTyping: true,
+    complete: function(results) {
+      console.log(results.data);
+    }
+  });
+
   let output = [];
+  // const records = parse(events, {columns: true, skip_empty_lines: true});
+  // console.log(records);
 
   if (dataUpdated) {
 
