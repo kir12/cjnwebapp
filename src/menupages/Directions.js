@@ -12,5 +12,4 @@ import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
 export const directionsPage = {
     "header": (<><FontAwesomeIcon icon={faLocationDot} fixedWidth></FontAwesomeIcon> Directions</>),
     "body": (<>test</>),
-    "order": 0
 }

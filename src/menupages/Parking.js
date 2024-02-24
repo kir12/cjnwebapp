@@ -12,5 +12,4 @@ import { faSquareParking } from '@fortawesome/free-solid-svg-icons';
 export const parkingPage = {
     "header": (<><FontAwesomeIcon icon={faSquareParking} fixedWidth></FontAwesomeIcon> Parking</>),
     "body": (<>test</>),
-    "order": 1
 }

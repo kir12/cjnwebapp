@@ -12,5 +12,4 @@ import { faMapLocationDot } from '@fortawesome/free-solid-svg-icons';
 export const conCenterPage = {
     "header": (<><FontAwesomeIcon icon={faMapLocationDot} fixedWidth></FontAwesomeIcon> Con Center & Map</>),
     "body": (<>test</>),
-    "order": 2
 }

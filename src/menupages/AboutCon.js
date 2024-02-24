@@ -30,5 +30,4 @@ export const aboutConPage = {
         <p>If you are interested, please send any monetary contributions to our Venmo at <b>@Animania</b>. Thank you very much for your support!</p>
       </>
     ),
-    "order": 4
 }
