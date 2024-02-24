@@ -8,7 +8,6 @@ import { colors, get_cookie_list, cmp } from "./Utils.js"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Badge from 'react-bootstrap/Badge';
-import { readCSV, DataFrame, toJSON } from 'danfojs';
 import events from './events.csv';
 import Papa from 'papaparse';
 
@@ -17,7 +16,7 @@ dayjs.extend(customParseFormat)
 class SPDataFrame {
   constructor(data) {
     this.data = data;
-    this.index = [...Array(this.data.length).keys()];
+    this.index = [...Array(data.length).keys()];
   }
 
   addColumn(column_name, series) {
@@ -59,7 +58,7 @@ class SPDataFrame {
       else{
         return this.data[value];
       }
-    }); 
+    }).filter(item => item); 
     return new SPDataFrame(rows);
   }
 
@@ -68,10 +67,6 @@ class SPDataFrame {
   }
 
 };
-
-class Series {
-
-}
 
 export default function Dataset({mode, param_fxn, appliedFilters}) {
   const [dataSet, setDataSet] = useState(new SPDataFrame([]));
@@ -90,42 +85,11 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
   };
   const handleEventOnHide = () => setShowEventDescription(false);
 
-
-  // pull in and construct data table
-  function combineTimeColumnsStart(row) {
-    return dayjs(row[3] + " " + row[4], "M/D/YY H:mm").toISOString();
-  }
-
-  function combineTimeColumnsEnd(row) {
-    return dayjs(row[5] + " " + row[6], "M/D/YY H:mm").toISOString();
-  }
-
   function uniqueColumn(series) {
     return [...new Set(series)];
   }
 
   useEffect(() => {
-
-    // const fetchData = async () => {
-    //   let data = await readCSV(events);
-    //   // data.head().print();
-    //   if (!dataUpdated) {
-
-    //     data = data.addColumn("combinedStart",data.apply(combineTimeColumnsStart, {axis:1}))
-    //     data = data.addColumn("combinedEnd",data.apply(combineTimeColumnsEnd, {axis:1}))
-    //     data = data.sortValues("combinedStart",{ascending:true});
-    //     data = data.addColumn("uniqueID",data.index, {axis:1});
-
-    //     let event_types = toJSON(data["event_type"].unique())[0];
-    //     let room_list = toJSON(data["event_room"].unique())[0];
-    //     let params = {'event_types':event_types, 'room_list': room_list};
-    //     param_fxn(params, 'toFilterOptions');
-    //     // optional: drop original time parameters
-
-    //     setDataSet(data);
-    //     setDataUpdated(true);
-    //   }
-    // }
 
     Papa.parse(events, {
       header: true,
@@ -146,8 +110,8 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
         let room_list = uniqueColumn(newdata.get("event_room"));
         let params = {'event_types':event_types, 'room_list': room_list};
 
-        newdata.debug();
-        console.log(params);
+        // newdata.debug();
+        // console.log(params);
 
         param_fxn(params, 'toFilterOptions');
         // optional: drop original time parameters
@@ -157,8 +121,6 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
 
       }
     });
-
-    // fetchData().catch(console.error);
 
   }, []);
 
@@ -179,7 +141,6 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
   
   if (dataUpdated) {
 
-    // let event_types = toJSON(dataSet["event_type"].unique())[0];
     let event_types = uniqueColumn(dataSet.get("event_type"));
 
     let displayData = dataSet;
@@ -193,15 +154,15 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     else if(mode === "filter"){
         
         if(appliedFilters["event_types"].length > 0){
-            // let result = dataSet.event_type.map((param) => {return appliedFilters["event_types"].includes(param)});
             let result = dataSet.get("event_type").map((param) => {return appliedFilters["event_types"].includes(param)});
-            displayData = dataSet.loc({rows: result.values});
+            console.log(result);
+            displayData = dataSet.loc({rows: result});
         }
 
         if(appliedFilters["room_list"].length > 0){
-            // let result = displayData.event_room.map((param) => {return appliedFilters["room_list"].includes(param)});
             let result = displayData.get("event_room").map((param) => {return appliedFilters["room_list"].includes(param)});
-            displayData = displayData.loc({rows: result.values});
+            console.log(result);
+            displayData = displayData.loc({rows: result});
         }
  
         // if(appliedFilters["room_list"] !== []){
@@ -218,7 +179,6 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
 
     let jsonexport = displayData.toJSON();
     console.log(jsonexport);
-    // let jsonexport = toJSON(displayData);
     jsonexport.forEach(function (elem, index_) {
 
       let index = elem["uniqueID"];
