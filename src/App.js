@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as fasStar, faFilter, faBook, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fasStar, faFilter, faBook, faHeart, faCheck } from '@fortawesome/free-solid-svg-icons';
 // faMagnifyingGlass to use in filteroptions when doing search
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import FilterOptions from "./FilterOptions"
@@ -73,6 +73,11 @@ function App({ menupagedata, menuheader }) {
     );
   }
 
+  let filterclass = "hasFilters p-1 me-2 align-items-center";
+  if(appliedFilters["event_types"].length + appliedFilters["room_list"].length === 0){
+    filterclass += " d-none"
+  }
+
   return (
     <>
       <div className="App">
@@ -107,7 +112,12 @@ function App({ menupagedata, menuheader }) {
             </Navbar.Offcanvas>
             <div className="d-flex order-1 ms-auto">
               <Nav className="flex-row">
-                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter/Search</Nav.Link>
+                <Nav.Link href="#home" className={filterclass}>
+                  <small><FontAwesomeIcon icon={faCheck} className="align-middle"></FontAwesomeIcon></small>
+                </Nav.Link>
+                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}>
+                  <FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter/Search
+                </Nav.Link>
                 { /* <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link> */}
               </Nav>
             </div>

@@ -40,6 +40,19 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
     }
   }
 
+  // this function's borked because there's no actual way to get the buttons to programatically change
+  // (while also preserving the ability to actually use them)
+  // for that reason, resetting forms will not be added until someone wants it badly enough
+  // function handleReset(e) {
+  //   e.preventDefault();
+  //   stack["event_types"] = [];
+  //   stack["room_list"] = [];
+  //   for(let i = 0; i < eventtypes.length; i++){
+  //     // eventtypes[i].useRef().click();
+  //     eventtypes[i].props["onClick"]();
+  //   }
+  // }
+
   return (
     <Offcanvas show={show_var} onHide={hide_fxn} placement={"end"}>
       <Offcanvas.Header closeButton>
@@ -47,7 +60,8 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
       </Offcanvas.Header>
       <Offcanvas.Body>
 
-        <Form onSubmit={handleSubmit}>
+        {/* onReset={handleReset} */}
+        <Form onSubmit={handleSubmit} id="filterForm">
           <Accordion alwaysOpen className="open">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Filter by Room</Accordion.Header>
@@ -67,6 +81,7 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
             </Accordion.Item>
           </Accordion>
           <Button type="submit" className = "mt-3">Submit</Button>
+          {/*<Button variant="secondary" type="reset" className="mt-3 mx-2">Clear Filters</Button>*/}
         </Form>
 
       </Offcanvas.Body>
