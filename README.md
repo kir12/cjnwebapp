@@ -21,7 +21,7 @@ To adapt this project to fit needs of your convention, the below steps may be us
         
     c. The `event_age_limit` column supports a variety of limits (e.g. "13+", "18+", etc.)
         
-5. Modify the contents of `MoreInfo.js` (namely the stuff inside the `<Modal.Body>`) for details specific to your con
+5. Replace the app's menupages with ones with information specific to your con by editing the ones in `src/menupages/`. Be sure to import and reference them in `src/index.js`
 6. The "Best Waifu" entry in the footer can be removed at the bottom of `src/App.js` if you wish
 7. Modify `public/CNAME` to the website domain of your choice. This project by default uses GitHub Pages for web hosting (by virtue of it being free) so usually this should be `<yourusername>.github.io/cjnwebapp`
     a. If you wish to use a custom domain, be sure to put down that instead. For more information on getting GitHub Pages to work with custom domains, [try this link](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
