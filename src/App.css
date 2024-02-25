@@ -63,3 +63,8 @@ html {
 body {
   height:100%;
 }
+
+.hasFilters {
+  background-color: lightgreen;
+  border-radius: 50px;
+}
