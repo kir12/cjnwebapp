@@ -4,7 +4,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as fasStar, faFilter, faBook, faMagnifyingGlass, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faStar as fasStar, faFilter, faBook, faHeart } from '@fortawesome/free-solid-svg-icons';
+// faMagnifyingGlass to use in filteroptions when doing search
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import FilterOptions from "./FilterOptions"
 import MenuPage from "./MenuPage"
@@ -37,8 +38,17 @@ function App({ menupagedata, menuheader }) {
   function getMenuState(idx) {return menupagebools[idx];}
 
   function handleRoleChange(type) {
-    setMode(type);
-    if(type === "filter" & !('activeFilter' in filterOptions)) {setshowFilterPane(true)};
+    if(type === "filterView"){
+      setMode("filter");
+    }
+    else{
+      setMode(type);
+    }
+    let numActiveFilters = appliedFilters["event_types"].length + appliedFilters["room_list"].length;
+    if(type === "filterView" & numActiveFilters === 0) {
+      setshowFilterPane(true);
+    }
+    else if(type === "filter"){setshowFilterPane(true);}
   }
 
   function dualLink(params, mode) {
@@ -97,8 +107,8 @@ function App({ menupagedata, menuheader }) {
             </Navbar.Offcanvas>
             <div className="d-flex order-1 ms-auto">
               <Nav className="flex-row">
-                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter</Nav.Link>
-                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link>
+                <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filter/Search</Nav.Link>
+                { /* <Nav.Link href="#home" className="me-2" onClick={() => handleRoleChange("filter")}><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon> Search</Nav.Link> */}
               </Nav>
             </div>
           </Container>
@@ -108,12 +118,15 @@ function App({ menupagedata, menuheader }) {
           <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
           <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
         </Container>
-        <Nav fill variant="pills" defaultActiveKey="home" className="sticky-bottom bg-white shadow-sm mt-2">
+        <Nav fill variant="pills" defaultActiveKey="home" activeKey={mode} className="sticky-bottom bg-white shadow-sm mt-2">
           <Nav.Item onClick={() => handleRoleChange("home")}>
             <Nav.Link eventKey="home"><FontAwesomeIcon icon={faBook}></FontAwesomeIcon> Events</Nav.Link>
           </Nav.Item>
           <Nav.Item onClick={() => handleRoleChange("bookmarks")}>
             <Nav.Link eventKey="bookmarks"><FontAwesomeIcon icon={fasStar}></FontAwesomeIcon> Bookmarks</Nav.Link>
+          </Nav.Item>
+          <Nav.Item onClick={() => handleRoleChange("filterView")}>
+            <Nav.Link eventKey="filter"><FontAwesomeIcon icon={faFilter}></FontAwesomeIcon> Filters</Nav.Link>
           </Nav.Item>
         </Nav>
       </div>
