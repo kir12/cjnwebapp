@@ -2,7 +2,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Accordion from 'react-bootstrap/Accordion';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
 
@@ -62,6 +66,14 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
 
         {/* onReset={handleReset} */}
         <Form onSubmit={handleSubmit} id="filterForm">
+          <Form.Group>
+            <Form.Label>Search Events</Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="searchbar"><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon></InputGroup.Text>
+              <Form.Control aria-label="Default" aria-describedby="searchbar"></Form.Control>
+              <InputGroup.Text><FontAwesomeIcon icon={faCircleXmark}></FontAwesomeIcon></InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
           <Accordion alwaysOpen className="open">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Filter by Room</Accordion.Header>
