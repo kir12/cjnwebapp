@@ -146,7 +146,7 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     let displayData = dataSet;
     if(mode === "bookmarks"){
       let cookie_list = get_cookie_list();
-      console.log(cookie_list);
+      // console.log(cookie_list);
       cookie_list = cookie_list.map(Number);
       cookie_list.sort(cmp);
       displayData = dataSet.loc({rows:cookie_list});
@@ -155,13 +155,13 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
         
         if(appliedFilters["event_types"].length > 0){
             let result = dataSet.get("event_type").map((param) => {return appliedFilters["event_types"].includes(param)});
-            console.log(result);
+            // console.log(result);
             displayData = dataSet.loc({rows: result});
         }
 
         if(appliedFilters["room_list"].length > 0){
             let result = displayData.get("event_room").map((param) => {return appliedFilters["room_list"].includes(param)});
-            console.log(result);
+            // console.log(result);
             displayData = displayData.loc({rows: result});
         }
  
@@ -178,7 +178,7 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     }
 
     let jsonexport = displayData.toJSON();
-    console.log(jsonexport);
+    // console.log(jsonexport);
     jsonexport.forEach(function (elem, index_) {
 
       let index = elem["uniqueID"];
