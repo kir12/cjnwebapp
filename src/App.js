@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as fasStar, faFilter, faBook, faHeart, faCheck } from '@fortawesome/free-solid-svg-icons';
 // faMagnifyingGlass to use in filteroptions when doing search
@@ -30,6 +30,8 @@ function App({ menupagedata, menuheader }) {
   // keep track of opened/closed status of menu pages
   const [menupagebools, setMenuPages] = useState(Array(menupagedata.length).fill(false));
 
+  const [scrollSettings, setScrollSettings] = useState({"home":0, "bookmarks":0,"filter":0});
+
   function changeMenuPageState(idx, isDisplayed) {
     let newstate = [...menupagebools];
     newstate[idx] = isDisplayed;
@@ -38,17 +40,34 @@ function App({ menupagedata, menuheader }) {
   function getMenuState(idx) {return menupagebools[idx];}
 
   function handleRoleChange(type) {
+
+    let oldmode = mode;
+
+    let changedScroll = {...scrollSettings};
+    changedScroll[oldmode] = window.scrollY;
+    setScrollSettings({
+      "home": changedScroll["home"],
+      "bookmarks": changedScroll["bookmarks"],
+      "filter": changedScroll["filter"]
+    });
+    // window.scrollTo(0,changedScroll[oldmode]);
+
+    let newmode = "";
     if(type === "filterView"){
-      setMode("filter");
+      newmode = "filter";
     }
     else{
-      setMode(type);
+      newmode = type;
     }
+
+    setMode(newmode);
+
     let numActiveFilters = appliedFilters["event_types"].length + appliedFilters["room_list"].length;
     if(type === "filterView" & numActiveFilters === 0) {
       setshowFilterPane(true);
     }
     else if(type === "filter"){setshowFilterPane(true);}
+
   }
 
   function dualLink(params, mode) {
@@ -77,6 +96,11 @@ function App({ menupagedata, menuheader }) {
   if(appliedFilters["event_types"].length + appliedFilters["room_list"].length === 0){
     filterclass += " d-none"
   }
+
+  // this useeffect runs whenever mode changes, and after the display set is repopulated
+  useEffect(() => {
+    window.scrollTo({top: scrollSettings[mode], behavior:'instant'});
+  }, [mode]);
 
   return (
     <>
@@ -126,7 +150,9 @@ function App({ menupagedata, menuheader }) {
 
         <Container id="infobody2">
           <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
-          <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
+          <div id ="dataset">
+            <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
+          </div>
         </Container>
         <Nav fill variant="pills" defaultActiveKey="home" activeKey={mode} className="sticky-bottom bg-white shadow-sm mt-2">
           <Nav.Item onClick={() => handleRoleChange("home")}>
