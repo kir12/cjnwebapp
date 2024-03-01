@@ -74,7 +74,9 @@ class SPDataFrame {
       switch(op){
         case '!==':
           return row[column] !== value;
-        case '===':
+        case '>=':
+          return row[column] >= value;
+        default:
           return row[column] === value;
       }
     });
@@ -156,12 +158,16 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
   // then do a set intersection
   // return the number of hit
   function rankResults(row) {
+    // reduce title, description, and search to sets and split by word
     let reduced_title = new Set(row["event_title"].replace(/[^\w\s]/gi, '').toLowerCase().split(" "));
     let reduced_description = new Set(row["event_description"].replace(/[^\w\s]/gi, '').toLowerCase().split(" "));
     let cleaned_search = new Set(appliedFilters["search_query"].split(" "));
-    let title_search = (new Set([...reduced_title].filter(i => cleaned_search.has(i)))).size;
-    let description_search = (new Set([...reduced_description].filter(i => cleaned_search.has(i)))).size;
-    return new String(title_search + description_search).toString();
+    // conduct searches wrt title and description
+    let title_search = new Set([...reduced_title].filter(i => cleaned_search.has(i)))
+    let description_search = new Set([...reduced_description].filter(i => cleaned_search.has(i)));
+    let unified_search = new Set([...title_search, ...description_search]);
+    // return ratio of words that got hits from original search compared to total
+    return unified_search.size / cleaned_search.size;
   }
 
   let output = [];
@@ -188,7 +194,7 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
               "rank": rank
             };
           });
-          let finalresults = (new SPDataFrame(results)).compare("rank","0","!==").get("assignIndex");
+          let finalresults = (new SPDataFrame(results)).compare("rank",0.5,">=").get("assignIndex");
           displayData = displayData.loc({rows: finalresults});
         }
 

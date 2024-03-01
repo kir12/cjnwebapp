@@ -5,7 +5,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
@@ -23,6 +23,19 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
     hide_fxn();
   }
 
+  // prevent pressing Enter from prematurely submitting the form
+  function disableEnter(e) {
+    if(e.keyCode === 13){
+      e.preventDefault();
+      return false;
+    }
+  }
+  
+  function clearText(){
+    document.getElementById("searchtext").value = "";
+  }
+
+  // modify applied events
   function foo(elem, type) {
     if(stack[type].includes(elem)){
       stack[type].splice(stack[type].indexOf(elem), 1);
@@ -67,13 +80,13 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
       <Offcanvas.Body>
 
         {/* onReset={handleReset} */}
-        <Form onSubmit={handleSubmit} id="filterForm">
+        <Form onSubmit={handleSubmit} onKeyDown={disableEnter} id="filterForm">
           <Form.Group>
             <Form.Label>Search Events</Form.Label>
             <InputGroup className="mb-3">
               <InputGroup.Text id="searchbar"><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon></InputGroup.Text>
-              <Form.Control aria-label="Default" aria-describedby="searchbar" id="searchtext"></Form.Control>
-              <InputGroup.Text><FontAwesomeIcon icon={faCircleXmark}></FontAwesomeIcon></InputGroup.Text>
+              <Form.Control type="search" aria-label="Default" aria-describedby="searchbar" id="searchtext" defaultValue={stack["search_query"]}></Form.Control>
+              <InputGroup.Text onClick={clearText}><FontAwesomeIcon icon={faCircleXmark}></FontAwesomeIcon></InputGroup.Text>
             </InputGroup>
           </Form.Group>
           <Accordion alwaysOpen className="open">
