@@ -10,13 +10,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOptions}) {
 
-  const [stack, setStack] = useState({"event_types":[], "room_list": []});
+  const [stack, setStack] = useState({"event_types":[], "room_list": [], "search_query": ""});
 
   // I wasn't able to get form submission to work with checkboxes,
   // so I just tracked each checkbox via state instead.
   // TODO: figure out how to preserve?
   function handleSubmit(e) {
     e.preventDefault();
+    let search_query = document.getElementById("searchtext").value.replace(/[^\w\s]/gi, '').toLowerCase();
+    stack["search_query"] = search_query;
     param_fxn(stack, "toDataSet");
     hide_fxn();
   }
@@ -70,7 +72,7 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
             <Form.Label>Search Events</Form.Label>
             <InputGroup className="mb-3">
               <InputGroup.Text id="searchbar"><FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon></InputGroup.Text>
-              <Form.Control aria-label="Default" aria-describedby="searchbar"></Form.Control>
+              <Form.Control aria-label="Default" aria-describedby="searchbar" id="searchtext"></Form.Control>
               <InputGroup.Text><FontAwesomeIcon icon={faCircleXmark}></FontAwesomeIcon></InputGroup.Text>
             </InputGroup>
           </Form.Group>
