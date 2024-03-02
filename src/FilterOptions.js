@@ -17,9 +17,32 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
   // TODO: figure out how to preserve?
   function handleSubmit(e) {
     e.preventDefault();
-    let search_query = document.getElementById("searchtext").value.replace(/[^\w\s]/gi, '').toLowerCase();
-    stack["search_query"] = search_query;
-    param_fxn(stack, "toDataSet");
+
+    let selected_rooms = [];
+    for(const room of filterOptions["room_list"]) {
+      if(document.getElementById(room).checked){
+        selected_rooms.push(room);
+      }
+    }
+
+    let selected_types = [];
+    for(const event of filterOptions["event_types"]) {
+      if(document.getElementById(event).checked){
+        selected_types.push(event);
+      }
+    }
+
+    let query = document.getElementById("searchtext").value.replace(/[^\w\s]/gi, '').toLowerCase();
+   
+    let newState = {
+      "event_types": selected_types,
+      "room_list": selected_rooms,
+      "search_query": query
+    }
+   
+    setStack(newState);
+
+    param_fxn(newState, "toDataSet");
     hide_fxn();
   }
 
@@ -36,13 +59,15 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
   }
 
   // modify applied events
+  // the stack was initially manually unkept but that was superseded
+  // this function will stay incase it's needed 
   function foo(elem, type) {
-    if(stack[type].includes(elem)){
-      stack[type].splice(stack[type].indexOf(elem), 1);
-    }
-    else{
-      stack[type].push(elem);
-    }
+    // if(stack[type].includes(elem)){
+    //   stack[type].splice(stack[type].indexOf(elem), 1);
+    // }
+    // else{
+    //   stack[type].push(elem);
+    // }
   }
 
   let eventtypes = [];
@@ -50,12 +75,14 @@ export default function FilterOptions({show_var, hide_fxn, param_fxn, filterOpti
   if(Object.keys(filterOptions).length !== 0){
     for(const elem of filterOptions["event_types"]) {
       let defaultChecked = stack["event_types"].includes(elem);
-      eventtypes.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem} onClick={() => foo(elem, "event_types")}></Form.Check>);
+      // eventtypes.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem} onClick={() => foo(elem, "event_types")}></Form.Check>);
+      eventtypes.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem}></Form.Check>);
     }
 
     for (const elem of filterOptions["room_list"]) {
       let defaultChecked = stack["room_list"].includes(elem);
-      rooms.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem} onClick={() => foo(elem, "room_list")}></Form.Check>);
+      // rooms.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem} onClick={() => foo(elem, "room_list")}></Form.Check>);
+      rooms.push(<Form.Check defaultChecked={defaultChecked} type="checkbox" id={elem} label={elem}></Form.Check>);
     }
   }
 
