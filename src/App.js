@@ -13,7 +13,6 @@ import Dataset from "./Dataset";
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { act } from 'react-dom/test-utils';
 
 function App({ menupagedata, menuheader }) {
 
@@ -147,7 +146,9 @@ function App({ menupagedata, menuheader }) {
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-false`} />
             <Navbar.Brand className="ms-2">
-              <NavDropdown title={(availableDays.length > 0) ? availableDays[activeDayIndex] : ""}>
+              {/* if desired to dynamically change page title based on scroll position, start here */}
+              {/* title={(availableDays.length > 0) ? availableDays[activeDayIndex] : ""} */}
+              <NavDropdown title="Select Day">
                 {rendered_days}
               </NavDropdown>
             </Navbar.Brand>

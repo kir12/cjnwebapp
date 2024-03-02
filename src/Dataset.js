@@ -131,7 +131,7 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
         // console.log(params);
 
         let days = newdata.apply((row) => {
-          return dayjs(row["combinedStart"]).format("M/D").toString();
+          return dayjs(row["combinedStart"]).format("ddd, M/D").toString();
         });
         days = uniqueColumn(days);
         changeDays(days);
@@ -147,16 +147,6 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
     });
 
   }, []);
-
-  // // TODO: figure out how to dynamically reclcualte the bounding client rect
-  // useEffect(() => {
-  //   if(dataUpdated === true){
-  //     let scrollbounds = availableDays.map((day) => {
-  //       return document.getElementById(day).getBoundingClientRect().top;
-  //     });
-  //     console.log(scrollbounds);
-  //   }
-  // }, [dataUpdated]);
 
   function noResults() {
     return (
@@ -264,7 +254,7 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
         let formatted_start = startjs.format("dddd, MMMM D").toString();
         // the number of events preceding the day indicator are enscribed into the classname
         output.push(
-          <ListGroup.Item key={formatted_start} className={"text-center sticky-top2 day-indicator events-" + num_evts_ctr} id={startjs.format("M/D").toString()}>
+          <ListGroup.Item key={formatted_start} className={"text-center sticky-top2 day-indicator events-" + num_evts_ctr} id={startjs.format("ddd, M/D").toString()}>
             <p className="mb-0"><b>{formatted_start}</b></p>
           </ListGroup.Item>
         );
