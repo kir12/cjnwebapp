@@ -91,7 +91,7 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
   const [showEventDescription, setShowEventDescription] = useState(false);
   const [eventDetails, setEventDetails] = useState({});
   const [evtPrint, setEvtPrint] = useState(<></>);
-
+  // const [availableDays, setAvailableDays] = useState([]);
 
   function handleEventOnClick(index, evtbulk){
     let evt = dataSet.loc({rows:[index]}).toJSON()[0];
@@ -135,6 +135,7 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
         });
         days = uniqueColumn(days);
         changeDays(days);
+        // setAvailableDays(days);
 
         param_fxn(params, 'toFilterOptions');
         // optional: drop original time parameters
@@ -146,6 +147,16 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
     });
 
   }, []);
+
+  // // TODO: figure out how to dynamically reclcualte the bounding client rect
+  // useEffect(() => {
+  //   if(dataUpdated === true){
+  //     let scrollbounds = availableDays.map((day) => {
+  //       return document.getElementById(day).getBoundingClientRect().top;
+  //     });
+  //     console.log(scrollbounds);
+  //   }
+  // }, [dataUpdated]);
 
   function noResults() {
     return (
@@ -251,7 +262,7 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
         daynum = startjs.day();
         let formatted_start = startjs.format("dddd, MMMM D").toString();
         output.push(
-          <ListGroup.Item key={formatted_start} className="text-center sticky-top2 day-indicator">
+          <ListGroup.Item key={formatted_start} className="text-center sticky-top2 day-indicator" id={startjs.format("M/D").toString()}>
             <p className="mb-0"><b>{formatted_start}</b></p>
           </ListGroup.Item>
         );

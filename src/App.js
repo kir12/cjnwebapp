@@ -111,6 +111,23 @@ function App({ menupagedata, menuheader }) {
     window.scrollTo({top: scrollSettings[mode], behavior:'instant'});
   }, [mode]);
 
+  // TODO: figure out how to recalculate this specifically whenever the dataset changes
+  // NOTE: mode is not sufficient because filter can change while keeping mode the same!
+  useEffect(() => {
+    let scrollbounds = availableDays.map((day) => {
+      return document.getElementById(day).getBoundingClientRect().top;
+    });
+    console.log(scrollbounds);
+  }, [availableDays, mode]);
+
+  useEffect(() => {
+    if(availableDays.length > 0){
+      let scroll = window.scrollY + document.getElementById(availableDays[activeDayIndex]).getBoundingClientRect().top
+      console.log(scroll);
+      window.scrollTo(0, scroll);
+    }
+  }, [activeDayIndex]);
+
   let rendered_days = availableDays.map((day) => {
     return (<NavDropdown.Item onClick={() => {handleDaySelect(day)}}>{day}</NavDropdown.Item>);
   });
