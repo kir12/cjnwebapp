@@ -34,8 +34,11 @@ class SPDataFrame {
     return output;
   }
 
-  sortValues(column, extraParams = {}){
-    this.data.sort((a,b) => a[column].localeCompare(b[column]));
+  sortValues(column, ascending=true){
+    this.data.sort((a,b) => {
+      let val = a[column].localeCompare(b[column]);
+      return (ascending) ? val : !val;
+    });
     return new SPDataFrame(this.data);
   }
 
@@ -64,6 +67,20 @@ class SPDataFrame {
 
   toJSON(){
     return this.data;
+  }
+
+  compare(column, value, op){
+    let output = this.data.filter((row) => {
+      switch(op){
+        case '!==':
+          return row[column] !== value;
+        case '>=':
+          return row[column] >= value;
+        default:
+          return row[column] === value;
+      }
+    });
+    return new SPDataFrame(output);
   }
 
 };
@@ -137,6 +154,22 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     );
   }
 
+  // reduce title and description to just alphanumeric + characters, split by word
+  // then do a set intersection
+  // return the number of hit
+  function rankResults(row) {
+    // reduce title, description, and search to sets and split by word
+    let reduced_title = new Set(row["event_title"].replace(/[^\w\s]/gi, '').toLowerCase().split(" "));
+    let reduced_description = new Set(row["event_description"].replace(/[^\w\s]/gi, '').toLowerCase().split(" "));
+    let cleaned_search = new Set(appliedFilters["search_query"].split(" "));
+    // conduct searches wrt title and description
+    let title_search = new Set([...reduced_title].filter(i => cleaned_search.has(i)))
+    let description_search = new Set([...reduced_description].filter(i => cleaned_search.has(i)));
+    let unified_search = new Set([...title_search, ...description_search]);
+    // return ratio of words that got hits from original search compared to total
+    return unified_search.size / cleaned_search.size;
+  }
+
   let output = [];
   
   if (dataUpdated) {
@@ -152,11 +185,23 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
       displayData = dataSet.loc({rows:cookie_list});
     }
     else if(mode === "filter"){
-        
+       
+        if(appliedFilters["search_query"] !== ""){
+          let results = displayData.apply(rankResults);
+          results = results.map((rank, idx) => {
+            return {
+              "assignIndex": idx,
+              "rank": rank
+            };
+          });
+          let finalresults = (new SPDataFrame(results)).compare("rank",0.5,">=").get("assignIndex");
+          displayData = displayData.loc({rows: finalresults});
+        }
+
         if(appliedFilters["event_types"].length > 0){
-            let result = dataSet.get("event_type").map((param) => {return appliedFilters["event_types"].includes(param)});
+            let result = displayData.get("event_type").map((param) => {return appliedFilters["event_types"].includes(param)});
             // console.log(result);
-            displayData = dataSet.loc({rows: result});
+            displayData = displayData.loc({rows: result});
         }
 
         if(appliedFilters["room_list"].length > 0){

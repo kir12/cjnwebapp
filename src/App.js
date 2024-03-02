@@ -25,7 +25,7 @@ function App({ menupagedata, menuheader }) {
   const handleFilterPaneOnHide = () => setshowFilterPane(false);
 
   // keep track of query status
-  const [appliedFilters, setAppliedFilters] = useState({"event_types": [], "room_list": []});
+  const [appliedFilters, setAppliedFilters] = useState({"event_types": [], "room_list": [], "search_query": ""});
 
   // keep track of opened/closed status of menu pages
   const [menupagebools, setMenuPages] = useState(Array(menupagedata.length).fill(false));
@@ -63,7 +63,7 @@ function App({ menupagedata, menuheader }) {
     setMode(newmode);
 
     let numActiveFilters = appliedFilters["event_types"].length + appliedFilters["room_list"].length;
-    if(type === "filterView" & numActiveFilters === 0) {
+    if(type === "filterView" && numActiveFilters === 0 && appliedFilters["search_query"] === "") {
       setshowFilterPane(true);
     }
     else if(type === "filter"){setshowFilterPane(true);}
@@ -93,7 +93,8 @@ function App({ menupagedata, menuheader }) {
   }
 
   let filterclass = "hasFilters p-1 me-2 align-items-center";
-  if(appliedFilters["event_types"].length + appliedFilters["room_list"].length === 0){
+  let num_filters = appliedFilters["event_types"].length + appliedFilters["room_list"].length;
+  if(num_filters === 0 && appliedFilters["search_query"] === ""){
     filterclass += " d-none"
   }
 
