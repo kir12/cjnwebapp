@@ -242,6 +242,7 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
     let jsonexport = displayData.toJSON();
 
     let daynum = -1;
+    let num_evts_ctr = 0;
 
     // console.log(jsonexport);
     jsonexport.forEach(function (elem, index_) {
@@ -261,12 +262,16 @@ export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
       if(daynum === -1 || startjs.day() !== daynum){
         daynum = startjs.day();
         let formatted_start = startjs.format("dddd, MMMM D").toString();
+        // the number of events preceding the day indicator are enscribed into the classname
         output.push(
-          <ListGroup.Item key={formatted_start} className="text-center sticky-top2 day-indicator" id={startjs.format("M/D").toString()}>
+          <ListGroup.Item key={formatted_start} className={"text-center sticky-top2 day-indicator events-" + num_evts_ctr} id={startjs.format("M/D").toString()}>
             <p className="mb-0"><b>{formatted_start}</b></p>
           </ListGroup.Item>
         );
+        num_evts_ctr = 0;
       }
+
+      num_evts_ctr += 1;
 
       let format_str = "";
       if(startjs.day() !== endjs.day()){
