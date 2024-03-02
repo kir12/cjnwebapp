@@ -68,3 +68,17 @@ body {
   background-color: lightgreen;
   border-radius: 50px;
 }
+
+/*code to push date indicators below the navbar*/
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+  .sticky-top2 {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 56px;
+    z-index: 1019;
+  }
+} 
+
+.day-indicator{
+  background-color: antiquewhite;
+}

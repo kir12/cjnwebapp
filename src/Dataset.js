@@ -85,7 +85,7 @@ class SPDataFrame {
 
 };
 
-export default function Dataset({mode, param_fxn, appliedFilters}) {
+export default function Dataset({mode, param_fxn, appliedFilters, changeDays}) {
   const [dataSet, setDataSet] = useState(new SPDataFrame([]));
   const [dataUpdated, setDataUpdated] = useState(false);
   const [showEventDescription, setShowEventDescription] = useState(false);
@@ -130,6 +130,12 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
         // newdata.debug();
         // console.log(params);
 
+        let days = newdata.apply((row) => {
+          return dayjs(row["combinedStart"]).format("M/D").toString();
+        });
+        days = uniqueColumn(days);
+        changeDays(days);
+
         param_fxn(params, 'toFilterOptions');
         // optional: drop original time parameters
 
@@ -146,7 +152,7 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
       <div className="row d-flex align-items-center justify-content-center" id="infobody">
         <div className="col-sm-6 text-center opacity-75">
           <p className="small mb-0"><a href="https://twitter.com/sobamushi_mo/status/1399661514043232259" target="blank" rel="noreferrer">Source</a></p>
-          <img src = "/noresults.jpg" className="img-fluid"></img>
+          <img src = "/noresults.jpg" className="img-fluid" alt="Confused Marisa"></img>
           <h5>No Results</h5>
           <p>Try setting some bookmarks or adjusting your filter options</p>
         </div>
@@ -223,6 +229,9 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
     }
 
     let jsonexport = displayData.toJSON();
+
+    let daynum = -1;
+
     // console.log(jsonexport);
     jsonexport.forEach(function (elem, index_) {
 
@@ -236,6 +245,18 @@ export default function Dataset({mode, param_fxn, appliedFilters}) {
       // compute time display
       let startjs = dayjs(elem["combinedStart"]);
       let endjs = dayjs(elem["combinedEnd"]);
+      
+      // we've moved onto a new set of days, we need to add a new day indicator
+      if(daynum === -1 || startjs.day() !== daynum){
+        daynum = startjs.day();
+        let formatted_start = startjs.format("dddd, MMMM D").toString();
+        output.push(
+          <ListGroup.Item key={formatted_start} className="text-center sticky-top2 day-indicator">
+            <p className="mb-0"><b>{formatted_start}</b></p>
+          </ListGroup.Item>
+        );
+      }
+
       let format_str = "";
       if(startjs.day() !== endjs.day()){
         format_str = "D/M h:mm A";

@@ -32,6 +32,9 @@ function App({ menupagedata, menuheader }) {
 
   const [scrollSettings, setScrollSettings] = useState({"home":0, "bookmarks":0,"filter":0});
 
+  const [availableDays, setAvailableDays] = useState([]);
+  const [activeDayIndex, setActiveDayIndex] = useState(0);
+
   function changeMenuPageState(idx, isDisplayed) {
     let newstate = [...menupagebools];
     newstate[idx] = isDisplayed;
@@ -79,6 +82,11 @@ function App({ menupagedata, menuheader }) {
     }
   }
 
+  function handleDaySelect(day){
+    console.log(day);
+    setActiveDayIndex(availableDays.indexOf(day));
+  }
+
   let menunavs = [];
   let menupages = [];
 
@@ -103,6 +111,10 @@ function App({ menupagedata, menuheader }) {
     window.scrollTo({top: scrollSettings[mode], behavior:'instant'});
   }, [mode]);
 
+  let rendered_days = availableDays.map((day) => {
+    return (<NavDropdown.Item onClick={() => {handleDaySelect(day)}}>{day}</NavDropdown.Item>);
+  });
+
   return (
     <>
       <div className="App">
@@ -111,10 +123,8 @@ function App({ menupagedata, menuheader }) {
           <Container fluid>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-false`} />
             <Navbar.Brand className="ms-2">
-              <NavDropdown title="7/26">
-                <NavDropdown.Item>7/25</NavDropdown.Item>
-                <NavDropdown.Item>7/26</NavDropdown.Item>
-                <NavDropdown.Item>7/27</NavDropdown.Item>
+              <NavDropdown title={(availableDays.length > 0) ? availableDays[activeDayIndex] : ""}>
+                {rendered_days}
               </NavDropdown>
             </Navbar.Brand>
             <Navbar.Offcanvas
@@ -152,7 +162,7 @@ function App({ menupagedata, menuheader }) {
         <Container id="infobody2">
           <FilterOptions show_var={showFilterPane} hide_fxn={handleFilterPaneOnHide} param_fxn={dualLink} filterOptions={filterOptions}></FilterOptions>
           <div id ="dataset">
-            <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters}></Dataset>
+            <Dataset mode={mode} param_fxn={dualLink} appliedFilters={appliedFilters} changeDays={setAvailableDays}></Dataset>
           </div>
         </Container>
         <Nav fill variant="pills" defaultActiveKey="home" activeKey={mode} className="sticky-bottom bg-white shadow-sm mt-2">
