@@ -4,7 +4,7 @@ export let colors = ["purple","fuchsia","green","lime","olive","yellow","navy","
 export const COOKIE_NAME = "BOOKMARKS";
 
 let today = new Date();
-today.setDate(today.getDate() + 7);
+today.setDate(today.getDate() + 30);
 export const cookie_parameters = {expires: today, sameSite:"lax"}
 export const cookies = new Cookies();
 
